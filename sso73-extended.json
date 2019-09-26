@@ -210,13 +210,31 @@
                 "name": "${APPLICATION_NAME}"
             },
             "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
                 "replicas": 1,
                 "selector": {
                     "deploymentConfig": "${APPLICATION_NAME}"
                 },
-                "strategy": {
-                    "type": "Recreate"
-                },
+                "triggers": [
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "${APPLICATION_NAME}"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "${APPLICATION_NAME}:latest"
+                            }
+                        },
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
                 "template": {
                     "metadata": {
                         "labels": {
@@ -229,6 +247,14 @@
                         "containers": [
                             {
                                 "env": [
+                                    {
+                                        "name": "SCRIPT_DEBUG",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "PS4",
+                                        "value": "+ $(basename $0):${LINENO} :"
+                                    },
                                     {
                                         "name": "SSO_HOSTNAME",
                                         "value": "${SSO_HOSTNAME}"
@@ -334,7 +360,6 @@
                                         "value": "${SSO_TRUSTSTORE_PASSWORD}"
                                     }
                                 ],
-                                "image": "${APPLICATION_NAME}",
                                 "imagePullPolicy": "Always",
                                 "livenessProbe": {
                                     "exec": {
@@ -424,26 +449,7 @@
                             }
                         ]
                     }
-                },
-                "triggers": [
-                    {
-                        "imageChangeParams": {
-                            "automatic": true,
-                            "containerNames": [
-                                "${APPLICATION_NAME}"
-                            ],
-                            "from": {
-                                "kind": "ImageStreamTag",
-                                "name": "redhat-sso73-openshift:1.0",
-                                "namespace": "${IMAGE_STREAM_NAMESPACE}"
-                            }
-                        },
-                        "type": "ImageChange"
-                    },
-                    {
-                        "type": "ConfigChange"
-                    }
-                ]
+                }
             }
         }
     ],
