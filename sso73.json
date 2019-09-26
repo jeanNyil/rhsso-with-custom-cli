@@ -21,7 +21,7 @@
         },
         "creationTimestamp": null,
         "name": "sso73-https-extended-cli",
-        "selfLink": "/apis/template.openshift.io/v1/namespaces/bdf-opengie-dev/templates/sso73-https-extended"
+        "selfLink": "/apis/template.openshift.io/v1/namespaces/bdf-opengie-dev/templates/sso73-https-extended-cli"
     },
     "objects": [
         {
@@ -608,7 +608,7 @@
             "displayName": "Git Repository URL",
             "name": "SOURCE_REPOSITORY_URL",
             "required": true,
-            "value": "https://github.com/msakho/opengie.git"
+            "value": "https://github.com/msakho/rhsso-with-custom-cli.git"
         },
         {
             "description": "Git branch/tag reference",
@@ -620,7 +620,7 @@
             "description": "Path within Git project to build; empty for root project directory.",
             "displayName": "Context Directory",
             "name": "CONTEXT_DIR",
-            "value": "openshift-resources"
+            "value": ""
         },
         {
             "description": "Container memory limit.",
